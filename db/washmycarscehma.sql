@@ -23,7 +23,6 @@ insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('
 
 
 CREATE TABLE owners (
-
     owner_id SERIAL PRIMARY KEY NOT NULL,
     firstname VARCHAR(20) NOT NULL,
     lastname VARCHAR(20) NOT NULL,
@@ -41,7 +40,7 @@ CREATE TABLE owners (
     FOREIGN KEY (credential_id) REFERENCES credentials(credential_id),
     UNIQUE(email),
     UNIQUE(mobile)
-)
+);
 
 -- THIS TABLE CREATE vehicle
 CREATE TABLE vehicle (
@@ -86,8 +85,6 @@ CREATE TABLE bookings (
     start_time BIGINT NOT NULL,
     end_time BIGINT NOT NULL,
     duration INTEGER NOT NULL,
-    photo_proof VARCHAR(100),
-    gps_image VARCHAR(100),
     is_cancelled BOOLEAN DEFAULT FALSE,
     has_washer_completed BOOLEAN DEFAULT FALSE,
     has_owner_confirmed BOOLEAN DEFAULT FALSE,
@@ -95,10 +92,12 @@ CREATE TABLE bookings (
     booking_status VARCHAR(1),
     booking_instructions VARCHAR(50),
     washer_assigned INTEGER,
-    service_id INTEGER,
-    wash_completed_proof VARCHAR(120),
+    washer_completed_proof VARCHAR(120),
+    price_id INTEGER,
     FOREIGN KEY (price_id) REFERENCES prices (price_id),
     owner_id INTEGER,
-    FOREIGN KEY (owner_id) REFERENCES owners (owner_id)
+    FOREIGN KEY (owner_id) REFERENCES owners (owner_id),
+    washer_id INTEGER,
+    FOREIGN KEY (washer_id) REFERENCES washers (washer_id)
 );
 
