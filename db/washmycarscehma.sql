@@ -11,15 +11,15 @@ CREATE TABLE credentials (
 
 CREATE TABLE prices (
     price_id SERIAL PRIMARY KEY NOT NULL,
-    price_item VARCHAR(4) NOT NULL,
+    price_item VARCHAR(5) NOT NULL,
     price NUMERIC(4,2) NOT NULL,
     service_stripe_fee_id VARCHAR(30) NOT NULL
 );
 
 insert into prices (price_item, price,service_stripe_fee_id) VALUES ('na', 0,'0');
-insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('Car', 15,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
-insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('4WD', 20,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
-insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('Truck', 40,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
+insert into prices (price_item, price,service_stripe_fee_id) VALUES ('Car', 15,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
+insert into prices (price_item, price,service_stripe_fee_id) VALUES ('4WD', 20,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
+insert into prices (price_item, price,service_stripe_fee_id) VALUES ('Truck', 40,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
 
 
 CREATE TABLE owners (
@@ -50,7 +50,7 @@ vehicle_photo VARCHAR(100) NOT NULL,
 owner_id INTEGER,
 FOREIGN KEY (owner_id) REFERENCES owners(owner_id)
 );
-
+//TODO: NEED TO PUT BACK UNIQUE FOR EMAIL AND PHONE IN DB
 CREATE TABLE washers (
     washer_id SERIAL PRIMARY KEY NOT NULL,
     firstname VARCHAR(20) NOT NULL,
@@ -70,10 +70,9 @@ CREATE TABLE washers (
     active_membership BOOLEAN DEFAULT TRUE,
     profileUrl VARCHAR(120),
     stripeAccountId VARCHAR(30),
+    acceptTerms BOOLEAN DEFAULT TRUE,
     credential_id INTEGER, 
-    FOREIGN KEY (credential_id) REFERENCES credentials(credential_id),
-    UNIQUE(email),
-    UNIQUE(mobile)
+    FOREIGN KEY (credential_id) REFERENCES credentials(credential_id)
 );
 ​
 
