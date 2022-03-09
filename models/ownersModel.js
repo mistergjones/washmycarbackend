@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { runSql } = require("../db/runsSql");
 const SQL = require("../db/ownersSql.js");
+const userSql = require("../db/usersSql.js");
+const User = require("./userModel.js");
 
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const Owner = {};
@@ -37,7 +39,34 @@ Owner.insertNewOwnerIntoTable = async (data) => {
             credential_id,
         ]);
 
-        return { data: { reult }, error: null };
+        // update the is_profile_Established to TRUE in credentials
+        const updateProfile = await runSql(
+            userSql.UPDATE_USER_IS_PROFILE_ESTABLISHED,
+            [credential_id]
+        );
+
+        // obtain the details of the owner
+        const theSpecificOwner = await runSql(userSql.GET_USER_BY_EMAIL, [
+            inputEmail,
+        ]);
+
+        var owner = theSpecificOwner.rows[0];
+
+        if (updateProfile.rowCount === 1) {
+            // obtain a token
+            var token = User.generateAuthToken(
+                inputFirstname,
+                inputLastname,
+                "O",
+                inputEmail,
+                credential_id,
+                true
+            );
+
+            // console.log("THE TOKEN IS", token);
+        }
+
+        return { data: { owner, token }, error: null };
     } catch (error) {
         return { data: null, error: error };
     }
