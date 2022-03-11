@@ -1,7 +1,7 @@
 const express = require("express");
 
 const users = require("../routes/users");
-// const bookings = require("../routes/bookings");
+const bookings = require("../routes/bookings");
 // const dogs = require("../routes/dogs");
 const owners = require("../routes/owners");
 const washers = require("../routes/washers");
@@ -32,7 +32,7 @@ module.exports = function (app) {
     app.use(express.static("public"));
 
     app.use("/api/users", users);
-    // app.use("/api/bookings", bookings);
+    app.use("/api/bookings", bookings);
     // app.use("/api/dogs", dogs);
     app.use("/api/owners", owners);
     app.use("/api/washers", washers);

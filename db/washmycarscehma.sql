@@ -81,9 +81,7 @@ CREATE TABLE washers (
 CREATE TABLE bookings (
     booking_id SERIAL PRIMARY KEY NOT NULL,
     date DATE NOT NULL,
-    start_time BIGINT NOT NULL,
-    end_time BIGINT NOT NULL,
-    duration INTEGER NOT NULL,
+    start_time TIME NOT NULL,
     is_cancelled BOOLEAN DEFAULT FALSE,
     has_washer_completed BOOLEAN DEFAULT FALSE,
     has_owner_confirmed BOOLEAN DEFAULT FALSE,
