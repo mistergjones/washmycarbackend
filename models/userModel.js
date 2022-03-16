@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const { runSql } = require("../db/runsSql");
 const SQL = require("../db/usersSql.js");
 const washerSql = require("../db/washersSql");
+const ownerSql = require("../db/ownersSql");
 
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const User = {};
@@ -72,9 +73,7 @@ User.getUserDetails = async (id, type) => {
         }
     } else if (type === "O") {
         //TODO:
-        const { rows } = await runSql(ownerSql.GET_OWNER_BY_CREDENTIAL_ID, [
-            id,
-        ]);
+        const { rows } = await runSql(ownerSql.GET_OWNER, [id]);
 
         // SQL CALL SHOULD RETURN ONE ROW
         if (rows.length !== 1) {

@@ -11,6 +11,27 @@ const insertNewBooking = async (data) => {
     }
 };
 
+const getOpenAndAssignedBookings = async (data) => {
+    try {
+        const result = await Booking.getOpenAndAssginedBookings(data);
+
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+const getCompletedBookings = async (data) => {
+    try {
+        const result = await Booking.getCompletedBookings(data);
+
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
 module.exports = {
     insertNewBooking,
+    getOpenAndAssignedBookings,
+    getCompletedBookings,
 };
