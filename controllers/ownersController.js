@@ -5,6 +5,14 @@ const Owner = require("../models/ownersModel");
 const insertNewOwner = async (data) => {
     try {
         const result = await Owner.insertNewOwnerIntoTable(data);
+    } catch (error) {
+        return error;
+    }
+};
+
+const getOwnerByCredentialId = async (id) => {
+    try {
+        const result = await Owner.getSpecificOwner(id);
         return result;
     } catch (error) {
         return error;
@@ -13,4 +21,5 @@ const insertNewOwner = async (data) => {
 
 module.exports = {
     insertNewOwner,
+    getOwnerByCredentialId,
 };

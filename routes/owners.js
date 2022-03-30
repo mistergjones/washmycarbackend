@@ -6,8 +6,6 @@ const controller = require("../controllers/ownersController");
 router.post("/", async (req, res) => {
     const result = await controller.insertNewOwner(req.body);
 
-    console.log("INSERTING A NEW OWNER", result);
-
     if (result.data === null) {
         res.send(result.error.error);
     } else {
@@ -27,4 +25,16 @@ router.post("/", async (req, res) => {
     // }
 });
 
+// OWNER TABLE: THIS WILL RETREIVE 1 SPECIFIC OWNER BASED ON THEIR CREDENTIAL ID
+router.get("/:credentialId", async (req, res) => {
+    try {
+        const owner = await controller.getOwnerByCredentialId(
+            req.params.credentialId
+        );
+        res.send(owner.data.result.rows);
+    } catch (error) {
+        console.log(error);
+        res.status(403).send(error);
+    }
+});
 module.exports = router;

@@ -7,6 +7,15 @@ const User = require("./userModel.js");
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const Owner = {};
 
+Owner.getSpecificOwner = async (id) => {
+    try {
+        const result = await runSql(SQL.GET_OWNER, [id]);
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
 Owner.insertNewOwnerIntoTable = async (data) => {
     // destructure the data
     const {
