@@ -7,6 +7,33 @@ const User = require("./userModel.js");
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const Owner = {};
 
+// the below will update the specific owner by credential id whnen they edit their profile details
+Owner.updateOwnerProfile = async (data) => {
+    const {
+        firstname,
+        lastname,
+        streetAddress,
+        suburb,
+        state,
+        postcode,
+        credential_id,
+    } = data;
+    try {
+        const result = await runSql(SQL.UPDATE_OWNER, [
+            firstname,
+            lastname,
+            streetAddress,
+            suburb,
+            state,
+            postcode,
+            credential_id,
+        ]);
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
 Owner.getSpecificOwner = async (id) => {
     try {
         const result = await runSql(SQL.GET_OWNER, [id]);

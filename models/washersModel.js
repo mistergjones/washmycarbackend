@@ -6,16 +6,39 @@ const User = require("./userModel.js");
 
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const Washer = {};
-
-Washer.getWasher = async (credentialId) => {
+// UPDATE SPECIFIC WASHER via EDIT PROFILE SREEN
+Washer.updateWasherProfile = async (data) => {
+    const {
+        firstname,
+        lastname,
+        streetAddress,
+        suburb,
+        state,
+        postcode,
+        credential_id,
+    } = data;
     try {
-        // console.log("***************************");
-        // console.log("washer.getWasher ->", credentialId);
-        const { rows } = await runSql(SQL.GET_WASHER, [credentialId]);
-        return rows[0];
+        const result = await runSql(SQL.UPDATE_WASHER, [
+            firstname,
+            lastname,
+            streetAddress,
+            suburb,
+            state,
+            postcode,
+            credential_id,
+        ]);
+        return { data: { result }, error: null };
     } catch (error) {
-        console.log(error);
-        return error;
+        return { data: null, error: error };
+    }
+};
+
+Washer.getSpecificWasher = async (credentialId) => {
+    try {
+        const result = await runSql(SQL.GET_WASHER, [credentialId]);
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
     }
 };
 
