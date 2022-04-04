@@ -9,6 +9,9 @@ router.get("/:credentialId", async (req, res) => {
         const washer = await controller.getWasherByCredentialId(
             req.params.credentialId
         );
+
+        console.log(" Do we hace the washer", washer.data.result.rows);
+
         res.send(washer.data.result.rows);
     } catch (error) {
         console.log(error);

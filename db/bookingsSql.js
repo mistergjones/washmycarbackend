@@ -12,7 +12,11 @@ module.exports = {
 
     GET_WASHER_ASSIGNED_JOBS: `select bookings.booking_id, bookings.date, bookings.start_time, bookings.booking_status, vehicles.vehicle_type, bookings.washer_completed_proof, bookings.service_fee from bookings, vehicles WHERE bookings.vehicle_id = vehicles.vehicle_id AND bookings.washer_assigned = $1 AND booking_status = 'A';`,
 
-    GET_OPEN_BOOKINGS: `select bookings.booking_id, bookings.date, bookings.start_time, bookings.booking_status, vehicles.vehicle_type, bookings.washer_completed_proof, bookings.service_fee from bookings, vehicles WHERE bookings.vehicle_id = vehicles.vehicle_id AND booking_status = 'O';`,
+    // JUST GET ALL OPEN BOOKINGS
+    GET_OPEN_BOOKINGS: `select owners.suburb, owners.firstname, owners.lastname, owners.street_address, owners.state, owners.postcode, owners.lat, owners.lng, bookings.booking_id, bookings.date, bookings.start_time, bookings.booking_status, vehicles.vehicle_type, vehicles.vehicle_photo, bookings.service_fee from bookings, vehicles, owners WHERE bookings.owner_id = owners.owner_id AND bookings.vehicle_id = vehicles.vehicle_id AND booking_status = 'O';`,
+    // UPDATE A BOOKING WITH TEH WASHER ID
+    UPDATE_BOOKING_STATUS_WITH_WASHER_INFO:
+        "UPDATE bookings set booking_status = 'A', washer_assigned = $1 where booking_id = $2",
 
     // GJ: 09/02/22: The below query obtains all completed jobs done by a walker FOR THE OWNER to see. It now includes the map route proof for the owner to verify. It also contains the Stripe account for the walker.
     GET_COMPLETED_JOBS_FOR_OWNER:

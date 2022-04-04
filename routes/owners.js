@@ -3,7 +3,10 @@ const router = express.Router();
 
 const controller = require("../controllers/ownersController");
 
+// INSERT A NEW OWNER
 router.post("/", async (req, res) => {
+    //console.log(req.body);
+
     const result = await controller.insertNewOwner(req.body);
 
     if (result.data === null) {

@@ -5,6 +5,7 @@ const Owner = require("../models/ownersModel");
 const insertNewOwner = async (data) => {
     try {
         const result = await Owner.insertNewOwnerIntoTable(data);
+        return result;
     } catch (error) {
         return error;
     }

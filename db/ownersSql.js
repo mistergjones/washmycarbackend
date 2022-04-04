@@ -1,6 +1,6 @@
 module.exports = {
     INSERT_NEW_OWNER:
-        "INSERT INTO OWNERS (firstname, lastname, street_address, suburb, state, postcode, mobile, email, dob, car_photo, type, active_membership, credential_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'O','TRUE',$11);",
+        "INSERT INTO OWNERS (firstname, lastname, street_address, suburb, state, postcode, lat,lng,mobile, email, dob, car_photo, type, active_membership, credential_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'O','TRUE',$13);",
     // get everything field ffor owner by their credential id
     GET_OWNER: "SELECT * FROM owners WHERE credential_id = $1;",
     // update specific owner details
