@@ -57,6 +57,7 @@ Owner.insertNewOwnerIntoTable = async (data) => {
         inputMobile,
         inputEmail,
         inputDOB,
+        inputVehicleType,
         inputCarPhoto,
         credential_id,
     } = data;
@@ -75,6 +76,7 @@ Owner.insertNewOwnerIntoTable = async (data) => {
             inputMobile,
             inputEmail,
             "1900-01-01",
+            inputVehicleType,
             inputCarPhoto,
             credential_id,
         ]);

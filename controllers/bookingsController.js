@@ -40,9 +40,42 @@ const getCompletedBookings = async (data) => {
     }
 };
 
+// GET THE JOBS THAT ARE OPEN FOR THE WASHER
 const getOpenBookings = async () => {
     try {
         const result = await Booking.getOpenBookings();
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
+/****************OWNERS BELOW */
+
+// GET COMPLETED JOBS FOR THE OWNER
+const getOwnerCompletedBookings = async (data) => {
+    try {
+        const result = await Booking.getOwnerCompletedBookings(data);
+
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
+const getOwnerOpenAndAssignedBookings = async (data) => {
+    try {
+        const result = await Booking.getOwnerOpenAndAssignedBookings(data);
+
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+const getOwnerOpenBookings = async (data) => {
+    try {
+        const result = await Booking.getOwnerOpenBookings(data);
+
         return result;
     } catch (error) {
         return error;
@@ -55,4 +88,7 @@ module.exports = {
     getCompletedBookings,
     getOpenBookings,
     updateBookingWithWasherInfo,
+    getOwnerCompletedBookings,
+    getOwnerOpenAndAssignedBookings,
+    getOwnerOpenBookings,
 };

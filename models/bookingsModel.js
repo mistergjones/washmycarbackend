@@ -12,7 +12,7 @@ Booking.insertNewBooking = async (data) => {
     // destructure the data
     const { whatVehicle, whatDate, whatTime, whatInstructions } = data;
 
-    console.log("The Data is:", data);
+    // console.log("The Data is:", data);
 
     try {
         // 1.0 insert detail into the credentials table
@@ -24,17 +24,16 @@ Booking.insertNewBooking = async (data) => {
             false,
             false,
             false,
-            "betty",
+            null,
             "O",
             whatInstructions,
-            "1",
-            "http://www.news.com.au",
-            "1",
+            null,
+            "no proof",
             "10.20",
             "1.20",
-            "2",
             "1",
-            "8",
+            "1",
+            "1",
         ]);
 
         return { data: { result }, error: null };
@@ -45,15 +44,21 @@ Booking.insertNewBooking = async (data) => {
 
 Booking.updateBookingWithWasherInfo = async (data) => {
     // destructure the data
-    const { booking_id, credential_id } = data;
+    // const { booking_id, credential_id } = data;
+    const { booking_id, washer_id } = data;
+    // console.log("WASHER INFO IS:", data);
 
     try {
         // 1. need to get the washer id based on teh supplied credential id
-        const washerResult = await runSql(washerSql.GET_WASHER, [
-            credential_id,
-        ]);
-        const washer_id = washerResult.rows[0].washer_id;
+        // const washerResult = await runSql(washerSql.GET_WASHER, [
+        //     credential_id,
+        // ]);
+        // const washer_id = washerResult.rows[0].washer_id;
         // 2. need to pass this infomration with the booking id to update teh booking
+        // const result = await runSql(
+        //     SQL.UPDATE_BOOKING_STATUS_WITH_WASHER_INFO,
+        //     [washer_id, booking_id]
+        // );
         const result = await runSql(
             SQL.UPDATE_BOOKING_STATUS_WITH_WASHER_INFO,
             [washer_id, booking_id]
@@ -65,19 +70,13 @@ Booking.updateBookingWithWasherInfo = async (data) => {
     } catch (error) {
         return { data: null, error: error };
     }
-
-    try {
-        console.log("D OW AHDSFJASHFJDALHFJA");
-    } catch (error) {}
 };
+// GET WASHER's open and assigned jobs for them
 Booking.getOpenAndAssginedBookings = async (data) => {
-    console.log("CREDENTIAL IS is", data);
     try {
         const result = await runSql(SQL.GET_WASHER_ASSIGNED_JOBS, [
-            data.credential_id,
+            data.washer_id,
         ]);
-
-        console.log("The result is: ", result.rows);
 
         return { data: { result }, error: null };
     } catch (error) {
@@ -85,10 +84,11 @@ Booking.getOpenAndAssginedBookings = async (data) => {
     }
 };
 
+// GET THE WASHER's COMPLETED JOBS
 Booking.getCompletedBookings = async (data) => {
     try {
         const result = await runSql(SQL.GET_WASHER_HISTORICAL_COMPLETIONS, [
-            data.credential_id,
+            data.washer_id,
         ]);
 
         // console.log("MODEL", result);
@@ -98,11 +98,49 @@ Booking.getCompletedBookings = async (data) => {
     }
 };
 
+// GET ALL OPEN BOOKINGS
 Booking.getOpenBookings = async () => {
     try {
         const result = await runSql(SQL.GET_OPEN_BOOKINGS, []);
 
         // console.log("MODEL", result);
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
+/******************OWNER BELOW *************/
+
+// FOR THE OWNER: get the completed jobs for them
+Booking.getOwnerCompletedBookings = async (data) => {
+    try {
+        const result = await runSql(SQL.GET_OWNER_HISTORICAL_COMPLETIONS, [
+            data,
+        ]);
+
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
+// FOR THE OWNERL get the ASSIGNED jobs
+Booking.getOwnerOpenAndAssignedBookings = async (data) => {
+    try {
+        const result = await runSql(SQL.GET_OWNER_ASSIGNED_JOBS, [data]);
+
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
+// FOR THE OWNER: get the open jobs who have not yet have a washer assigned
+Booking.getOwnerOpenBookings = async (data) => {
+    try {
+        const result = await runSql(SQL.GET_OWNER_OPEN_JOBS, [data]);
+
         return { data: { result }, error: null };
     } catch (error) {
         return { data: null, error: error };

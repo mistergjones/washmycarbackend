@@ -35,6 +35,7 @@ CREATE TABLE owners (
     mobile VARCHAR(10) NOT NULL,
     email VARCHAR(50) NOT NULL,
     dob DATE NOT NULL,
+    vehicle_type VARCHAR(1),
     car_photo VARCHAR(100),
     type VARCHAR(1) NOT NULL,
     active_membership BOOLEAN DEFAULT TRUE,
@@ -53,9 +54,9 @@ owner_id INTEGER,
 FOREIGN KEY (owner_id) REFERENCES owners(owner_id)
 );
 
-insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('truck', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
 insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('car', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
 insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('ute', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
+insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('truck', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
 insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('plane', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
 
 
@@ -104,7 +105,6 @@ CREATE TABLE bookings (
     booking_instructions VARCHAR(50),
     washer_assigned INTEGER,
     washer_completed_proof VARCHAR(120),
-    walker_assigned_id INTEGER,
     service_fee NUMERIC(4,2),
     our_commission NUMERIC(4,2),
     service_id INTEGER,
