@@ -17,9 +17,9 @@ CREATE TABLE services (
 );
 
 insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('na', 0,'0');
-insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('Car', 15,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
-insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('Ute', 20,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
-insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('Truck', 40,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
+insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('car', 15,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
+insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('ute', 20,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
+insert into services (service_type, service_fee,service_stripe_fee_id) VALUES ('truck', 40,'price_1KYJqKKYhB8sv9zu8WUO4cmM');
 
 
 CREATE TABLE owners (
@@ -35,7 +35,7 @@ CREATE TABLE owners (
     mobile VARCHAR(10) NOT NULL,
     email VARCHAR(50) NOT NULL,
     dob DATE NOT NULL,
-    vehicle_type VARCHAR(5),
+    vehicle_type VARCHAR(1),
     car_photo VARCHAR(100),
     type VARCHAR(1) NOT NULL,
     active_membership BOOLEAN DEFAULT TRUE,
@@ -45,6 +45,19 @@ CREATE TABLE owners (
     UNIQUE(mobile)
 );
 
+-- THIS TABLE CREATE vehicle
+CREATE TABLE vehicles (
+vehicle_id SERIAL PRIMARY KEY NOT NULL,
+vehicle_type VARCHAR(5) NOT NULL,
+vehicle_photo VARCHAR(100) NOT NULL,
+owner_id INTEGER,
+FOREIGN KEY (owner_id) REFERENCES owners(owner_id)
+);
+
+insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('car', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
+insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('ute', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
+insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('truck', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
+insert into vehicles (vehicle_type, vehicle_photo, owner_id) VALUES ('plane', 'price_1KYJqKKYhB8sv9zu8WUO4cmM',1);
 
 
 
@@ -92,9 +105,13 @@ CREATE TABLE bookings (
     booking_instructions VARCHAR(50),
     washer_assigned INTEGER,
     washer_completed_proof VARCHAR(120),
+    service_fee NUMERIC(4,2),
+    our_commission NUMERIC(4,2),
     service_id INTEGER,
     FOREIGN KEY (service_id) REFERENCES services (service_id),
     owner_id INTEGER,
-    FOREIGN KEY (owner_id) REFERENCES owners (owner_id)
+    FOREIGN KEY (owner_id) REFERENCES owners (owner_id),
+    vehicle_id INTEGER,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles (vehicle_id)
 );
 

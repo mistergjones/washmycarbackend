@@ -8,6 +8,7 @@ const ownersController = require("../controllers/ownersController");
 router.post("/", async (req, res) => {
     // console.log("ROUTES -> BOOKIGS: ", req.body);
     const response = await controller.insertNewBooking(req.body);
+    res.send(response.data.result);
 });
 
 // UPDATE A BOOKING WITH WASHER INFO

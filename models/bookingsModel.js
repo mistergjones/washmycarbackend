@@ -5,17 +5,33 @@ const SQL = require("../db/bookingsSql.js");
 const washerSql = require("../db/washersSql.js");
 const Washer = require("./washersModel.js");
 
+const ownerSql = require("../db/ownersSql");
+
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const Booking = {};
 
 Booking.insertNewBooking = async (data) => {
     // destructure the data
-    const { whatVehicle, whatDate, whatTime, whatInstructions } = data;
+    const {
+        whatVehicle,
+        whatDate,
+        whatTime,
+        whatInstructions,
+        credential_id,
+    } = data;
 
+    // console.log("*********************");
     // console.log("The Data is:", data);
 
     try {
-        // 1.0 insert detail into the credentials table
+        // 1.0 Need the service id based on the owner's vehicle
+        const ownerResult = await runSql(ownerSql.GET_OWNER, [credential_id]);
+        console.log("*********************");
+        // console.log(ownerResult.rows);
+        const vehicle_type = ownerResult.rows[0].vehicle_type;
+        console.log("ADFAJFHA", ownerResult.rows[0].vehicle_type);
+
+        // 2.0 insert detail into the credentials table
         const result = await runSql(SQL.INSERT_NEW_BOOKING, [
             whatDate,
             whatTime,
@@ -29,11 +45,8 @@ Booking.insertNewBooking = async (data) => {
             whatInstructions,
             null,
             "no proof",
-            "10.20",
-            "1.20",
-            "1",
-            "1",
-            "1",
+            vehicle_type,
+            credential_id,
         ]);
 
         return { data: { result }, error: null };
