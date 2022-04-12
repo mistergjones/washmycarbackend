@@ -1,4 +1,4 @@
-
+-- create database washmycar_backup with template washmycar;
 CREATE TABLE credentials (
     credential_id SERIAL PRIMARY KEY NOT NULL,
     email VARCHAR(50) NOT NULL,
@@ -81,8 +81,8 @@ CREATE TABLE washers (
 CREATE TABLE bookings (
     booking_id SERIAL PRIMARY KEY NOT NULL,
     date DATE NOT NULL,
-    start_time TIME NOT NULL,
-    end_time TIME,
+    start_time BIGINT NOT NULL,
+    end_time BIGINT,
     duration INTEGER,
     is_cancelled BOOLEAN DEFAULT FALSE,
     has_washer_completed BOOLEAN DEFAULT FALSE,

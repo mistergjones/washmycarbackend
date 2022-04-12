@@ -7,6 +7,8 @@ const Washer = require("./washersModel.js");
 
 const ownerSql = require("../db/ownersSql");
 
+const timeToBigInt = require("../helpers/timeToBigInt");
+
 // USED FOR EXPORTING THE FUNCTIONS BELOW
 const Booking = {};
 
@@ -20,14 +22,35 @@ Booking.insertNewBooking = async (data) => {
         credential_id,
     } = data;
 
-    // console.log("*********************");
-    // console.log("The Data is:", data);
+    // Need to extrapolate the start time into BIG INT format. (Milliseconds)
+    const day = whatDate.split("-")[2];
+    const month = whatDate.split("-")[1];
+    const year = whatDate.split("-")[0];
+    const hour = whatTime.split(":")[0];
+    const minute = whatTime.split(":")[1];
+    const second = 30;
+    // const convertedTime = new Date(year, month - 1, day, hour, minute, second);
+    const convertedTime = new Date(
+        year +
+            "-" +
+            month +
+            "-" +
+            day +
+            "T" +
+            hour +
+            ":" +
+            minute +
+            ":" +
+            second
+    );
+    // require start time to be in miliseconds
+    var timeInBigInt =
+        convertedTime.getTime() + convertedTime.getTimezoneOffset();
 
     try {
         // 1.0 Need the service id based on the owner's vehicle
         const ownerResult = await runSql(ownerSql.GET_OWNER, [credential_id]);
-        console.log("*********************");
-        // console.log(ownerResult.rows);
+
         const vehicle_type = ownerResult.rows[0].vehicle_type;
         console.log("ADFAJFHA", ownerResult.rows[0].vehicle_type);
 
@@ -35,7 +58,7 @@ Booking.insertNewBooking = async (data) => {
         const result = await runSql(SQL.INSERT_NEW_BOOKING, [
             whatDate,
             whatTime,
-            whatTime,
+            timeInBigInt,
             "45",
             false,
             false,
