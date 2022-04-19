@@ -87,6 +87,7 @@ CREATE TABLE bookings (
     is_cancelled BOOLEAN DEFAULT FALSE,
     has_washer_completed BOOLEAN DEFAULT FALSE,
     has_owner_confirmed BOOLEAN DEFAULT FALSE,
+    has_owner_paid BOOLEAN DEFAULT FALSE,
     whom_cancelled VARCHAR(6),
     booking_status VARCHAR(1),
     booking_instructions VARCHAR(50),

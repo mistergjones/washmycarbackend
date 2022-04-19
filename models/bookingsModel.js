@@ -22,7 +22,7 @@ Booking.insertNewBooking = async (data) => {
         credential_id,
     } = data;
 
-    // Need to extrapolate the start time into BIG INT format. (Milliseconds)
+    // the inputed date
     const day = whatDate.split("-")[2];
     const month = whatDate.split("-")[1];
     const year = whatDate.split("-")[0];
@@ -30,6 +30,8 @@ Booking.insertNewBooking = async (data) => {
     const minute = whatTime.split(":")[1];
     const second = 30;
     // const convertedTime = new Date(year, month - 1, day, hour, minute, second);
+
+    // need to conver the inputted date and time into a format for BIG INT
     const convertedTime = new Date(
         year +
             "-" +
@@ -43,7 +45,7 @@ Booking.insertNewBooking = async (data) => {
             ":" +
             second
     );
-    // require start time to be in miliseconds
+    // convert the date and start time into a BIG INT
     var timeInBigInt =
         convertedTime.getTime() + convertedTime.getTimezoneOffset();
 
@@ -52,14 +54,14 @@ Booking.insertNewBooking = async (data) => {
         const ownerResult = await runSql(ownerSql.GET_OWNER, [credential_id]);
 
         const vehicle_type = ownerResult.rows[0].vehicle_type;
-        console.log("ADFAJFHA", ownerResult.rows[0].vehicle_type);
+        //console.log("ADFAJFHA", ownerResult.rows[0].vehicle_type);
 
         // 2.0 insert detail into the credentials table
         const result = await runSql(SQL.INSERT_NEW_BOOKING, [
             whatDate,
-            whatTime,
             timeInBigInt,
-            "45",
+            timeInBigInt + 3600000,
+            "3600000",
             false,
             false,
             false,
@@ -78,6 +80,7 @@ Booking.insertNewBooking = async (data) => {
     }
 };
 
+// Update the booking with the WASHER assigned
 Booking.updateBookingWithWasherInfo = async (data) => {
     // destructure the data
     // const { booking_id, credential_id } = data;
@@ -107,6 +110,59 @@ Booking.updateBookingWithWasherInfo = async (data) => {
         return { data: null, error: error };
     }
 };
+
+// UPDATE BOOKING THAT WASHER HAS COMPLETED JOB
+Booking.updateBookingAsWasherCompleted = async (data) => {
+    // destructure the data
+    const { washer_completed_proof, booking_id } = data;
+
+    try {
+        const result = await runSql(
+            SQL.UPDATE_BOOKING_AS_WASHER_COMPLETED_JOB,
+            [washer_completed_proof, booking_id]
+        );
+
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
+// OWNER VERFIES AND UPDATES THAT JOB IS COMPLETE
+Booking.updateBookingAsOwnerVerfiedJobComplete = async (data) => {
+    // destructure the data
+
+    const { washer_completed_proof } = data;
+
+    try {
+        const result = await runSql(
+            SQL.UPDATE_BOOKING_OWNER_VERIFIES_CAR_WASHED,
+            [washer_completed_proof]
+        );
+
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
+// OWNER VERFIES AND MAKES PAYMENT
+Booking.updateBookingAsOwnerMakesPayment = async (data) => {
+    // destructure the data
+
+    const { booking_id } = data;
+
+    try {
+        const result = await runSql(SQL.UPDATE_BOOKING_AS_OWNER_MAKES_PAYMENT, [
+            booking_id,
+        ]);
+
+        return { data: { result }, error: null };
+    } catch (error) {
+        return { data: null, error: error };
+    }
+};
+
 // GET WASHER's open and assigned jobs for them
 Booking.getOpenAndAssginedBookings = async (data) => {
     try {

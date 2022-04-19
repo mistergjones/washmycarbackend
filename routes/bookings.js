@@ -21,6 +21,44 @@ router.patch("/:booking_id", async (req, res) => {
     }
 });
 
+// UPDATE A BOOKING THAT OWNER VERIFIES COMPLETE
+router.post("/ownerverifies", async (req, res) => {
+    try {
+        const result = await controller.updateBookingAsOwnerVerfiedJobComplete(
+            req.body
+        );
+
+        res.send(result.data.result);
+    } catch (error) {
+        res.status(403).send(error);
+    }
+});
+
+router.post("/ownermakespayment/:booking_id", async (req, res) => {
+    try {
+        const result = await controller.updateBookingAsOwnerMakesPayment(
+            req.body
+        );
+
+        res.send(result.data.result);
+    } catch (error) {
+        res.status(403).send(error);
+    }
+});
+
+// UPDATE A BOOKING WITH WASHER COMPLETED A WASH JOB
+router.post("/:booking_id", async (req, res) => {
+    try {
+        const result = await controller.updateBookingAsWasherCompleted(
+            req.body
+        );
+        console.log("ROUTE.POST / :bookingID", result);
+        res.send(result.data.result);
+    } catch (error) {
+        res.status(403).send(error);
+    }
+});
+
 // FOR OWNERS: this route will retrieve all completed job for a specific OWNER
 router.get("/completedwashes/:credential_id", async (req, res) => {
     //1.0 need to get the owner id first

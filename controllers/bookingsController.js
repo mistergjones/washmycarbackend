@@ -21,6 +21,40 @@ const updateBookingWithWasherInfo = async (data) => {
     }
 };
 
+// update a booking with washer information as WASHER has completed job
+const updateBookingAsWasherCompleted = async (data) => {
+    console.log(
+        "BOOKINGS CONTROLLER -> updateBookingAsWasherCompleted -> THJE DAT IS",
+        data
+    );
+    try {
+        const result = await Booking.updateBookingAsWasherCompleted(data);
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
+const updateBookingAsOwnerVerfiedJobComplete = async (data) => {
+    try {
+        const result = await Booking.updateBookingAsOwnerVerfiedJobComplete(
+            data
+        );
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
+const updateBookingAsOwnerMakesPayment = async (data) => {
+    try {
+        const result = await Booking.updateBookingAsOwnerMakesPayment(data);
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
 const getOpenAndAssignedBookings = async (data) => {
     try {
         const result = await Booking.getOpenAndAssginedBookings(data);
@@ -88,6 +122,9 @@ module.exports = {
     getCompletedBookings,
     getOpenBookings,
     updateBookingWithWasherInfo,
+    updateBookingAsWasherCompleted,
+    updateBookingAsOwnerVerfiedJobComplete,
+    updateBookingAsOwnerMakesPayment,
     getOwnerCompletedBookings,
     getOwnerOpenAndAssignedBookings,
     getOwnerOpenBookings,
