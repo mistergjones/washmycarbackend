@@ -34,8 +34,18 @@ const getWasherByCredentialId = async (id) => {
     }
 };
 
+const getAllIncomes = async (washer_id) => {
+    try {
+        const result = await Washer.getAllIncomes(washer_id);
+        return result;
+    } catch (error) {
+        return error;
+    }
+};
+
 module.exports = {
     insertNewWasher,
     getWasherByCredentialId,
     updateWasherProfile,
+    getAllIncomes,
 };

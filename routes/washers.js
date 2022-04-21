@@ -4,6 +4,24 @@ const router = express.Router();
 const controller = require("../controllers/washersController");
 
 //TODO: NEED TO PUT BACK UNIQUE FOR EMAIL AND PHONE IN DB
+// GET THE INCOME QUERIES FOR THE WASJER
+router.get("/incomes/:credential_id", async (req, res) => {
+    try {
+        //1.0 obtain washer id first
+        const washer = await controller.getWasherByCredentialId(
+            req.params.credential_id
+        );
+
+        const washer_id = washer.data.result.rows[0].washer_id;
+
+        // 2.0 obtain the 3 different types of incomes
+        const result = await controller.getAllIncomes(washer_id);
+        res.send(result.data);
+    } catch (error) {
+        res.status(403).send(error);
+    }
+});
+
 router.get("/:credentialId", async (req, res) => {
     try {
         const washer = await controller.getWasherByCredentialId(
